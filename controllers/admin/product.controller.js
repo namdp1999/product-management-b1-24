@@ -6,6 +6,7 @@ module.exports.index = async (req, res) => {
     deleted: false
   };
 
+  // Filter
   const filterStatus = [
     {
       name: "Tất cả",
@@ -35,12 +36,21 @@ module.exports.index = async (req, res) => {
   if(req.query.status) {
     find.status = req.query.status;
   }
+  // End Filter
+
+  // Search
+  if(req.query.keyword) {
+    const regex = new RegExp(req.query.keyword, "i");
+    find.title = regex;
+  }
+  // End Search
 
   const products = await Product.find(find);
 
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
     products: products,
-    filterStatus: filterStatus
+    filterStatus: filterStatus,
+    keyword: req.query.keyword
   });
 }
