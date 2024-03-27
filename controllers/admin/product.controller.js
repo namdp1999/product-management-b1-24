@@ -22,12 +22,32 @@ module.exports.index = async (req, res) => {
   }
   // End Search
 
-  const products = await Product.find(find);
+  // Pagination
+  const objectPagination = {
+    currentPage: 1,
+    limitItems: 4
+  }
+
+  if(req.query.page) {
+    objectPagination.currentPage = parseInt(req.query.page);
+  }
+
+  objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItems;
+
+  const countRecords = await Product.countDocuments(find);
+  objectPagination.totalPage = Math.ceil(countRecords/objectPagination.limitItems);
+  // End Pagination
+
+  const products = await Product
+    .find(find)
+    .limit(objectPagination.limitItems)
+    .skip(objectPagination.skip);
 
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
     products: products,
     filterStatus: filterStatus,
-    keyword: req.query.keyword
+    keyword: req.query.keyword,
+    objectPagination: objectPagination
   });
 }
