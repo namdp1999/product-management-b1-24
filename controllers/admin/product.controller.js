@@ -43,7 +43,7 @@ module.exports.index = async (req, res) => {
   });
 }
 
-// [GET] /admin/products/:status/:id
+// [PATCH] /admin/products/:status/:id
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
