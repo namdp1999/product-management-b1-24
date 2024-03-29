@@ -133,3 +133,27 @@ if(formChangeMulti) {
   });
 }
 // End form-change-multi
+
+// button-delete
+const listButtonDelete = document.querySelectorAll("[button-delete]");
+if(listButtonDelete.length > 0) {
+  const formDeleteItem = document.querySelector("[form-delete-item]");
+
+  listButtonDelete.forEach(button => {
+    button.addEventListener("click", () => {
+      const isConfirm = confirm("Bạn có chắc muốn xóa?");
+
+      if(isConfirm) {
+        const id = button.getAttribute("data-id");
+        const path = formDeleteItem.getAttribute("data-path");
+  
+        const action = `${path}/${id}?_method=DELETE`;
+  
+        formDeleteItem.action = action;
+  
+        formDeleteItem.submit();
+      }
+    });
+  });
+}
+// End button-delete
