@@ -55,7 +55,11 @@ module.exports.changeStatus = async (req, res) => {
     status: status
   });
 
-  req.flash('success', 'Cập nhật trạng thái thành công!');
+  const infoProduct = await Product.findOne({
+    _id: id
+  });
+
+  req.flash('success', `Cập nhật trạng thái sản phẩm ${infoProduct.title} thành công!`);
 
   res.redirect(`back`);
 }
