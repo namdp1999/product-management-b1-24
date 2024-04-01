@@ -74,6 +74,7 @@ module.exports.changeMulti = async (req, res) => {
       }, {
         status: type
       });
+      req.flash('success', 'Cập nhật trạng thái thành công!');
       break;
     case "delete-all":
       await Product.updateMany({
