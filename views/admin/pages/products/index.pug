@@ -29,6 +29,7 @@ block main
             select(name="type" class="form-control")
               option(value="active") Hoạt động
               option(value="inactive") Dừng hoạt động
+              option(value="change-position") Thay đổi vị trí
               option(value="delete-all") Xóa tất cả
           .form-group.d-none
             input(
@@ -51,6 +52,7 @@ block main
             th Hình ảnh
             th Tiêu đề
             th Giá
+            th Vị trí
             th Trạng thái
             th Hành động
 
@@ -69,6 +71,14 @@ block main
                 )
               td #{item.title}
               td #{item.price}$
+              td
+                input(
+                  name="position"
+                  value=item.position
+                  type="number"
+                  style="width: 60px;"
+                  min="1"
+                )
               td
                 if(item.status == "active")
                   button(
