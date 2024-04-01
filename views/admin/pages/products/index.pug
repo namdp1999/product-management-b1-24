@@ -2,11 +2,10 @@ extends  ../../layouts/default.pug
 include ../../mixins/filter.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
 
 block main
-  - if (messages.success)
-    div(class="alert alert-success")
-      | #{messages.success}
+  +alert-success()
 
   h1(class="mb-4") Danh sách sản phẩm
 
