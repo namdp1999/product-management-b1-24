@@ -121,3 +121,29 @@ module.exports.deleteItem = async (req, res) => {
 
   res.redirect("back");
 }
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create", {
+    pageTitle: "Thêm mới sản phẩm"
+  });
+}
+
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  if(req.body.position) {
+    req.body.position = parseInt(req.body.position);
+  } else {
+    const countProduct = await Product.countDocuments();
+    req.body.position = countProduct + 1;
+  }
+
+  const record = new Product(req.body);
+  await record.save();
+
+  req.flash("success", "Thêm mới sản phẩm thành công!");
+  res.redirect(`/${systemConfig.prefixAdmin}/products`);
+}
