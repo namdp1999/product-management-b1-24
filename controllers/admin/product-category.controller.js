@@ -46,56 +46,28 @@ module.exports.createPost = async (req, res) => {
   res.redirect(`/${systemConfig.prefixAdmin}/products-category`);
 };
 
+// [GET] /admin/products-category/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      _id: req.params.id,
+      deleted: false,
+    };
 
+    const data = await ProductCategory.findOne(find);
 
+    const records = await ProductCategory.find({
+      deleted: false,
+    });
 
+    const newRecords = createTreeHelper(records);
 
-
-// [
-//   {
-//     id: "123",
-//     title: "Điện thoại",
-//     childen: [
-//       {
-//         id: "123",
-//         title: "Điện thoại Iphone"
-//       },
-//       {
-//         id: "123",
-//         title: "Điện thoại Samsung"
-//       }
-//     ]
-//   },
-//   {
-//     id: "123",
-//     title: "Thời trang",
-//     childen: [
-//       {
-//         id: "123",
-//         title: "Thời trang nam",
-//         childen: [
-//           {
-//             id: "123",
-//             title: "Áo sơ mi nam"
-//           },
-//           {
-//             id: "123",
-//             title: "Quần âu nam"
-//           },
-//           {
-//             id: "123",
-//             title: "Giày nam"
-//           },
-//         ]
-//       },
-//       {
-//         id: "123",
-//         title: "Thời trang nữ"
-//       },
-//       {
-//         id: "123",
-//         title: "Thời trang trẻ em"
-//       }
-//     ]
-//   },
-// ]
+    res.render("admin/pages/products-category/edit", {
+      pageTitle: "Chỉnh sửa danh mục sản phẩm",
+      data: data,
+      records: newRecords,
+    });
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/products-category`);
+  }
+};
