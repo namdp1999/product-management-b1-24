@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
 
 block main
   h1(class="mb-4") Thêm mới danh mục sản phẩm
@@ -35,8 +36,7 @@ block main
       )
         option(value="") -- Chọn danh mục cha --
         if(records)
-          each item in records
-            option(value=item.id) #{item.title}
+          +select-tree(records)
 
     div(class="form-group")
       label(for="desc") Mô tả
