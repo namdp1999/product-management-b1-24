@@ -233,3 +233,60 @@ if(sort) {
   }
 }
 // End Sort
+
+// Table permissions
+const buttonSubmitPermissions = document.querySelector("[button-submit-permissions]");
+
+if(buttonSubmitPermissions) {
+  buttonSubmitPermissions.addEventListener("click", () => {
+    const roles = [];
+    const tablePermissions = document.querySelector("[table-permissions]");
+    const rows = tablePermissions.querySelectorAll("tbody tr[data-name]");
+    
+    rows.forEach((row, index) => {
+      const dataName = row.getAttribute("data-name");
+      const inputs = row.querySelectorAll("input");
+
+      if(dataName == "id") {
+        inputs.forEach(input => {
+          const id = input.value;
+          roles.push({
+            id: id,
+            permissions: []
+          });
+        });
+      } else {
+        inputs.forEach((input, index) => {
+          const inputChecked = input.checked;
+          if(inputChecked) {
+            roles[index].permissions.push(dataName);
+          }
+        });
+      }
+    });
+
+    console.log(roles);
+    if(roles.length > 0) {
+      const formChangePermissions = document.querySelector("[form-change-permissions]");
+      const inputRoles = formChangePermissions.querySelector("input[name='roles']");
+      inputRoles.value = JSON.stringify(roles);
+      formChangePermissions.submit();
+    }
+  });
+}
+// End Table Permissions
+
+// Data default Table Permissions
+const dataRecords = document.querySelector("[data-records]");
+if(dataRecords) {
+  const records = JSON.parse(dataRecords.getAttribute("data-records"));
+  const tablePermissions = document.querySelector("[table-permissions]");
+  console.log(tablePermissions);
+
+  records.forEach((record, index) => {
+    const permissions = record.permissions;
+    console.log(permissions);
+    console.log(index);
+  });
+}
+// End Data default Table Permissions
