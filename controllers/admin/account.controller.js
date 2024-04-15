@@ -53,3 +53,47 @@ module.exports.createPost = async (req, res) => {
 
   res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 };
+
+// [GET] /admin/accounts/edit/:id
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      _id: req.params.id,
+      deleted: false,
+    };
+
+    const data = await Account.findOne(find);
+
+    const roles = await Role.find({
+      deleted: false,
+    });
+
+    res.render("admin/pages/accounts/edit", {
+      pageTitle: "Chỉnh sửa tài khoản",
+      data: data,
+      roles: roles,
+    });
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+  }
+};
+
+// [PATCH] /admin/accounts/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    if(req.body.password) {
+      req.body.password = md5(req.body.password);
+    } else {
+      delete req.body.password;
+    }
+  
+    await Account.updateOne({
+      _id: req.params.id,
+      deleted: false
+    }, req.body);
+
+    res.redirect("back");
+  } catch (error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+  }
+};
