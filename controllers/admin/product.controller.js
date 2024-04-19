@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 const filterHelper = require("../../helpers/filter.helper");
 const paginationHelper = require("../../helpers/pagination.helper");
 const systemConfig = require("../../config/system");
@@ -47,6 +48,18 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip)
     .sort(sort);
+
+  for (const product of products) {
+    const createdBy = await Account.findOne({
+      _id: product.createdBy
+    });
+
+    // if(createdBy) {
+    //   product.createdByFullName = createdBy.fullName;
+    // }
+
+    product.createdByFullName = createdBy?.fullName;
+  }
 
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
@@ -97,7 +110,9 @@ module.exports.changeMulti = async (req, res) => {
       await Product.updateMany({
         _id: { $in: ids }
       }, {
-        deleted: true
+        deleted: true,
+        deletedAt: new Date(),
+        deletedBy: res.locals.user.id
       });
       req.flash('success', 'Xóa sản phẩm thành công!');
       break;
@@ -127,7 +142,9 @@ module.exports.deleteItem = async (req, res) => {
   await Product.updateOne({
     _id: id
   }, {
-    deleted: true
+    deleted: true,
+    deletedAt: new Date(),
+    deletedBy: res.locals.user.id
   });
 
   req.flash('success', 'Xóa sản phẩm thành công!');
@@ -161,9 +178,7 @@ module.exports.createPost = async (req, res) => {
     req.body.position = countProduct + 1;
   }
 
-  // if(req.file) {
-  //   req.body.thumbnail = `/uploads/${req.file.filename}`;
-  // }
+  req.body.createdBy = res.locals.user.id;
 
   const record = new Product(req.body);
   await record.save();
@@ -202,6 +217,7 @@ module.exports.editPatch = async (req, res) => {
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
   req.body.position = parseInt(req.body.position);
+  req.body.updatedBy = res.locals.user.id;
 
   // if(req.file) {
   //   req.body.thumbnail = `/uploads/${req.file.filename}`;
