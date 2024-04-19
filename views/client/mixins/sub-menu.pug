@@ -1,0 +1,7 @@
+mixin sub-menu(records)
+  ul
+    each item in records
+      li
+        a(href=`/products/${item.slug}`) #{item.title}
+        if(item.children && item.children.length > 0)
+          +sub-menu(item.children)
