@@ -78,9 +78,19 @@ module.exports.detail = async (req, res) => {
     status: "active"
   });
 
+  const category = await ProductCategory.findOne({
+    _id: product.product_category_id,
+    deleted: false,
+    status: "active"
+  });
+
+  product.category = category;
+
+  product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
+
   if(product) {
     res.render("client/pages/products/detail", {
-      pageTitle: "Chi tiết sản phẩm",
+      pageTitle: product.title,
       product: product
     });
   } else {
