@@ -12,10 +12,18 @@ module.exports.index = async (req, res) => {
     product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
   }
 
-  console.log(productsFeatured);
+  const productsNew = await Product.find({
+    deleted: false,
+    status: "active",
+  }).sort({ position: "desc" }).limit(6).select("-description");
+
+  for (const product of productsNew) {
+    product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
+  }
 
   res.render("client/pages/home/index", {
     pageTitle: "Trang chủ",
-    productsFeatured: productsFeatured
+    productsFeatured: productsFeatured,
+    productsNew: productsNew
   });
 }
