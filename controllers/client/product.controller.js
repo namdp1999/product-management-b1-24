@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/product-category.model");
 
 // [GET] /products/
 module.exports.index = async (req, res) => {
@@ -15,6 +16,32 @@ module.exports.index = async (req, res) => {
   
   res.render("client/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
+    products: products
+  });
+}
+
+// [GET] /products/:slugCategory
+module.exports.category = async (req, res) => {
+  const slugCategory = req.params.slugCategory;
+
+  const category = await ProductCategory.findOne({
+    slug: slugCategory,
+    deleted: false,
+    status: "active"
+  });
+
+  const products = await Product.find({
+    product_category_id: category.id,
+    deleted: false,
+    status: "active"
+  }).sort({ position: "desc" });
+
+  for (const item of products) {
+    item.priceNew = (item.price * (100 - item.discountPercentage)/100).toFixed(0);
+  }
+  
+  res.render("client/pages/products/index", {
+    pageTitle: category.title,
     products: products
   });
 }
