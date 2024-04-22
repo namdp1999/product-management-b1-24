@@ -24,7 +24,11 @@ const productSchema = new mongoose.Schema({
   deletedAt: Date,
   deletedBy: String,
   createdBy: String,
-  updatedBy: String
+  updatedBy: String,
+  featured: {
+    type: String,
+    default: "0"
+  }
 }, {
   timestamps: true
 });

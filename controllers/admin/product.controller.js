@@ -219,10 +219,6 @@ module.exports.editPatch = async (req, res) => {
   req.body.position = parseInt(req.body.position);
   req.body.updatedBy = res.locals.user.id;
 
-  // if(req.file) {
-  //   req.body.thumbnail = `/uploads/${req.file.filename}`;
-  // }
-
   await Product.updateOne({
     _id: id,
     deleted: false
