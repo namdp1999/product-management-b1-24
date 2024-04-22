@@ -30,8 +30,30 @@ module.exports.category = async (req, res) => {
     status: "active"
   });
 
+  const getSubCategory = async (parent_id) => {
+    let allSubs = [];
+
+    const listSub = await ProductCategory.find({
+      parent_id: parent_id,
+      deleted: false,
+      status: "active"
+    }).select("id title");
+
+    allSubs = [...listSub];
+
+    for (const sub of listSub) {
+      const childs = await getSubCategory(sub.id);
+      allSubs = allSubs.concat(childs);
+    }
+
+    return allSubs;
+  };
+
+  const listSubCategory = await getSubCategory(category.id);
+  const listIdSubCategory = listSubCategory.map(item => item.id);
+
   const products = await Product.find({
-    product_category_id: category.id,
+    product_category_id: { $in: [category.id, ...listIdSubCategory] },
     deleted: false,
     status: "active"
   }).sort({ position: "desc" });
