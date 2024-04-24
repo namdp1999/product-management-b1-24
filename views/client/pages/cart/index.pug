@@ -12,49 +12,53 @@ block main
         +box-head("Giỏ hàng")
 
 
-    .row
-      .col-12
-        table(class="table table-bordered")
-          thead
-            tr
-              th STT
-              th Ảnh
-              th Tên
-              th Giá
-              th Số lượng
-              th Tổng tiền
-              th Hành động
-          tbody
-            each item, index in cartDetail.products
+    if(cartDetail.products.length > 0)
+      .row
+        .col-12
+          table(class="table table-bordered")
+            thead
               tr
-                td #{index + 1}
-                td
-                  img(
-                    src=item.infoProduct.thumbnail
-                    alt=item.infoProduct.title
-                    width="80px"
-                  )
-                td
-                  a(href=`/products/detail/${item.infoProduct.slug}`) #{item.infoProduct.title}
-                td #{item.infoProduct.priceNew}$
-                td
-                  input(
-                    type="number"
-                    name="quantity"
-                    value=item.quantity
-                    min="1"
-                    max=item.infoProduct.stock
-                    item-id=item.product_id
-                    style="width: 60px"
-                  )
-                td #{item.infoProduct.totalPrice}$
-                td
-                  a(
-                    href=`/cart/delete/${item.product_id}`
-                    class="btn btn-danger"
-                  ) Xóa
-        
-        h3(class="text-right") Tổng đơn hàng: #{cartDetail.totalPrice}$
-        
-        div(class="text-right mt-3")
-          a(href="/checkout" class="btn btn-success") THANH TOÁN
+                th STT
+                th Ảnh
+                th Tên
+                th Giá
+                th Số lượng
+                th Tổng tiền
+                th Hành động
+            tbody
+              each item, index in cartDetail.products
+                tr
+                  td #{index + 1}
+                  td
+                    img(
+                      src=item.infoProduct.thumbnail
+                      alt=item.infoProduct.title
+                      width="80px"
+                    )
+                  td
+                    a(href=`/products/detail/${item.infoProduct.slug}`) #{item.infoProduct.title}
+                  td #{item.infoProduct.priceNew}$
+                  td
+                    input(
+                      type="number"
+                      name="quantity"
+                      value=item.quantity
+                      min="1"
+                      max=item.infoProduct.stock
+                      item-id=item.product_id
+                      style="width: 60px"
+                    )
+                  td #{item.infoProduct.totalPrice}$
+                  td
+                    a(
+                      href=`/cart/delete/${item.product_id}`
+                      class="btn btn-danger"
+                    ) Xóa
+          
+          h3(class="text-right") Tổng đơn hàng: #{cartDetail.totalPrice}$
+          
+          div(class="text-right mt-3")
+            a(href="/checkout" class="btn btn-success") THANH TOÁN
+    else
+      p Chưa có sản phẩm nào trong giỏ hàng.
+      a(href="/products" class="btn btn-warning") Mua sắm ngay
