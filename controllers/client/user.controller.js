@@ -194,3 +194,18 @@ module.exports.resetPasswordPost = async (req, res) => {
   req.flash("success", "Đổi mật khẩu thành công!");
   res.redirect("/");
 };
+
+// [GET] /user/info
+module.exports.info = async (req, res) => {
+  const infoUser = await User.findOne({
+    tokenUser: req.cookies.tokenUser,
+    deleted: false
+  }).select("-password");
+
+  console.log(infoUser);
+
+  res.render("client/pages/user/info", {
+    pageTitle: "Thông tin tài khoản",
+    infoUser: infoUser
+  });
+};
