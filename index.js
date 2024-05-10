@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const moment = require("moment");
 const path = require('path');
+const http = require('http');
+const { Server } = require("socket.io");
 dotenv.config();
 
 database.connect();
@@ -18,6 +20,15 @@ const routeClient = require("./routes/client/index.route");
 
 const app = express();
 const port = process.env.PORT;
+
+// SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log("Có 1 user kết nối");
+})
+// End SocketIO
 
 // Flash
 app.use(cookieParser('JHSVBDSDSD'));
@@ -52,6 +63,6 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App listening on port ${port}`)
 });
