@@ -17,9 +17,13 @@ html
     script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js") 
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
 
+    //- emoji-picker
+    script(type="module", src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js") 
+    //- End emoji-picker
+
     //- SocketIO
     script(src="/socket.io/socket.io.js")
     script(src="/js/socket.js")
     //- End SocketIO
 
-    script(src="/js/script.js")
+    script(type="module" src="/js/script.js")
