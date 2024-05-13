@@ -11,23 +11,25 @@ module.exports.index = async (req, res) => {
     console.log("Có 1 user kết nối");
 
     // CLIENT_SEND_MESSAGE
-    socket.on("CLIENT_SEND_MESSAGE", async (content) => {
-      // Lưu tin nhắn vào database
-      const chat = new Chat({
-        user_id: userId,
-        // room_chat_id: String,
-        content: content,
-        // images: Array,
-      });
+    socket.on("CLIENT_SEND_MESSAGE", async (data) => {
+      console.log(data);
 
-      await chat.save();
+      // // Lưu tin nhắn vào database
+      // const chat = new Chat({
+      //   user_id: userId,
+      //   // room_chat_id: String,
+      //   content: data.content,
+      //   // images: Array,
+      // });
 
-      // Trả data realtime về client
-      _io.emit("SERVER_RETURN_MESSAGE", {
-        user_id: userId,
-        content: content,
-        fullName: userFullName
-      })
+      // await chat.save();
+
+      // // Trả data realtime về client
+      // _io.emit("SERVER_RETURN_MESSAGE", {
+      //   user_id: userId,
+      //   content: content,
+      //   fullName: userFullName
+      // })
     })
     // End CLIENT_SEND_MESSAGE
 
