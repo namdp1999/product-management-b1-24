@@ -18,8 +18,13 @@ block main
               div(class=(user.id == chat.user_id ? "inner-outgoing" : "inner-incoming"))
                 if(user.id != chat.user_id)
                   .inner-name #{chat.userFullName}
-                .inner-content
-                  | #{chat.content}
+                if(chat.content)
+                  .inner-content
+                    | #{chat.content}
+                if(chat.images)
+                  .inner-images
+                    each image in chat.images
+                      img(src=image)
 
             div(class="inner-list-typing")
           div(class="custom-file-container" data-upload-id="upload-images")
