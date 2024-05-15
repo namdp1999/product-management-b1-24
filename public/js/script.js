@@ -72,6 +72,8 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const div = document.createElement("div");
 
   let htmlFullName = "";
+  let htmlContent = "";
+  let htmlImages = "";
   
   if(myId == data.user_id) {
     div.classList.add("inner-outgoing");
@@ -79,10 +81,27 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     div.classList.add("inner-incoming");
     htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
   }
+
+  if(data.content) {
+    htmlContent = `<div class="inner-content">${data.content}</div>`;
+  }
+
+  if(data.images.length > 0) {
+    htmlImages += `<div class="inner-images">`;
+
+    data.images.forEach(image => {
+      htmlImages += `
+        <img src="${image}">
+      `;
+    })
+
+    htmlImages += `</div>`;
+  }
   
   div.innerHTML = `
     ${htmlFullName}
-    <div class="inner-content">${data.content}</div>
+    ${htmlContent}
+    ${htmlImages}
   `;
 
   const elementListTyping = body.querySelector(".inner-list-typing");
