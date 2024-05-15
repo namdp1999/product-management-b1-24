@@ -107,6 +107,8 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const elementListTyping = body.querySelector(".inner-list-typing");
 
   body.insertBefore(div, elementListTyping);
+
+  new Viewer(div);
 })
 // End SERVER_RETURN_MESSAGE
 
@@ -184,3 +186,10 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
   }
 })
 // End SERVER_RETURN_TYPING
+
+// Preview Images Chat
+const bodyChat = document.querySelector(".chat .inner-body");
+if(bodyChat) {
+  new Viewer(bodyChat);
+}
+// End Preview Images Chat
