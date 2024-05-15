@@ -1,7 +1,13 @@
 const User = require("../../models/user.model");
 
+const usersSocket = require("../../sockets/client/users.socket");
+
 // [GET] /users/not-friend
 module.exports.notFriend = async (req, res) => {
+  // SocketIO
+  usersSocket(req, res);
+  // End SocketIO
+
   const userId = res.locals.user.id;
 
   const users = await User.find({
