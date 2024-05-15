@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+
+    include ../../partials/list-btn-users.pug
+
+    .row
+      .col-12
+        +box-head("Danh sách người dùng")
+
+    .row
+      .col-6
+        div(class="box-user")
+          div(class="inner-avatar")
+            img(
+              src="https://robohash.org/hicveldicta.png"
+              alt="Le Van A"
+            )
+          div(class="inner-info")
+            div(class="inner-name") Le Van A
+            div(class="inner-buttons")
+              button(
+                class="btn btn-sm btn-primary mr-1"
+              ) Kết bạn
+              button(
+	              class="btn btn-sm btn-secondary mr-1"
+              ) Hủy
