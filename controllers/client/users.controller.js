@@ -9,9 +9,15 @@ module.exports.notFriend = async (req, res) => {
   // End SocketIO
 
   const userId = res.locals.user.id;
+  const requestFriends = res.locals.user.requestFriends;
+  const acceptFriends = res.locals.user.acceptFriends;
 
   const users = await User.find({
-    _id: { $ne: userId }, // not equal
+    $and: [
+      {_id: {$ne: userId}},// not equal
+      {_id: {$nin: requestFriends}}, // not in
+      {_id: {$nin: acceptFriends}} // not in
+    ],
     status: "active",
     deleted: false,
   }).select("avatar fullName");
