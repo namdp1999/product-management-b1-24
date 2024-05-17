@@ -36,7 +36,26 @@ module.exports = (req, res) => {
           $push: { requestFriends: userIdB }
         });
       }
+    })
 
+    // Khi A hủy gửi yêu cầu cho B
+    socket.on("CLIENT_CANCEL_FRIREND", async (userIdB) => {
+      console.log(userIdA);
+      console.log(userIdB);
+
+      // Xóa id của A trong acceptFriends của B
+      await User.updateOne({
+        _id: userIdB
+      }, {
+        $pull: { acceptFriends: userIdA }
+      });
+
+      // Xóa id của B trong requestFriends của A
+      await User.updateOne({
+        _id: userIdA
+      }, {
+        $pull: { requestFriends: userIdB }
+      });
     })
   })
 }
