@@ -77,6 +77,7 @@ socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
 socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
+  // Lấy thông tin của A để in ra trang Lời mời đã nhận của B
   const dataUsersAccept = document.querySelector(`[data-users-accept="${data.userIdB}"]`);
   if(dataUsersAccept) {
     const newBoxUser = document.createElement("div");
@@ -133,6 +134,15 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
     // Bắt sự kiện cho nút Chấp nhận
     const btnAcceptFriend = document.querySelector("[btn-accept-friend]");
     acceptUser(btnAcceptFriend);
+  }
+
+  // Xóa A khỏi trang Danh sách người dùng của B
+  const dataUsersNotFriend = document.querySelector(`[data-users-not-friend="${data.userIdB}"]`);
+  if(dataUsersNotFriend) {
+    const boxUserA = dataUsersNotFriend.querySelector(`[user-id="${data.infoUserA._id}"]`);
+    if(boxUserA) {
+      dataUsersNotFriend.removeChild(boxUserA);
+    }
   }
 });
 // End SERVER_RETURN_INFO_ACCEPT_FRIEND
