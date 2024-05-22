@@ -3,8 +3,19 @@ const RoomChat = require("../../models/rooms-chat.model");
 
 // [GET] /rooms-chat/
 module.exports.index = async (req, res) => {
+  const userId = res.locals.user.id;
+
+  const listRoomChat = await RoomChat.find({
+    "users.user_id": userId,
+    typeRoom: "group",
+    deleted: false
+  });
+
+  console.log(listRoomChat);
+
   res.render("client/pages/rooms-chat/index", {
     pageTitle: "Danh sách phòng",
+    listRoomChat: listRoomChat
   });
 };
 
