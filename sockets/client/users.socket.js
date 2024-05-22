@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const RoomChat = require("../../models/rooms-chat.model");
 
 module.exports = (req, res) => {
   const userIdA = res.locals.user.id;
@@ -119,6 +120,23 @@ module.exports = (req, res) => {
       console.log(userIdA);
       console.log(userIdB);
 
+      // Tạo mới một phòng chat cho A và B
+      const roomChat = new RoomChat({
+        typeRoom: "friend",
+        users: [
+          {
+            user_id: userIdA,
+            role: "superAdmin"
+          },
+          {
+            user_id: userIdB,
+            role: "superAdmin"
+          }
+        ],
+      });
+
+      await roomChat.save();
+
       // Thêm {user_id, room_chat_id} của B vào friendsList của A
       // Xóa id của B trong acceptFriends của A
       await User.updateOne({
@@ -127,7 +145,7 @@ module.exports = (req, res) => {
         $push: {
           friendsList: {
             user_id: userIdB,
-            room_chat_id: ""
+            room_chat_id: roomChat.id
           }
         },
         $pull: { acceptFriends: userIdB }
@@ -141,7 +159,7 @@ module.exports = (req, res) => {
         $push: {
           friendsList: {
             user_id: userIdA,
-            room_chat_id: ""
+            room_chat_id: roomChat.id
           }
         },
         $pull: { requestFriends: userIdA }
