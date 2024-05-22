@@ -80,7 +80,10 @@ module.exports.friends = async (req, res) => {
     deleted: false,
   }).select("avatar fullName statusOnline");
 
-  console.log(users);
+  users.forEach((user) => {
+    const info = res.locals.user.friendsList.find(userFriend => userFriend.user_id == user.id);
+    user.room_chat_id = info.room_chat_id;
+  });
 
   res.render("client/pages/users/friends", {
     pageTitle: "Danh sách bạn bè",
